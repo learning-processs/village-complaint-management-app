@@ -1,5 +1,3 @@
-// src/pages/admin/ComplaintView.jsx
-
 import { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -85,25 +83,38 @@ const ComplaintView = () => {
   }
 
   if (loading) return (
-    <div className='min-h-screen bg-gray-50 flex'>
+    <div
+      className='min-h-screen flex'
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >
       <AdminSidebar />
       <div className='flex-1 flex items-center justify-center'>
-        <p className='text-gray-400'>Loading...</p>
+        <p style={{ color: 'var(--text-secondary)' }}>
+          Loading...
+        </p>     
       </div>
     </div>
   )
 
   if (!complaint) return (
-    <div className='min-h-screen bg-gray-50 flex'>
+    <div
+      className='min-h-screen flex'
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >     
       <AdminSidebar />
       <div className='flex-1 flex items-center justify-center'>
-        <p className='text-gray-400'>Complaint not found!</p>
+        <p style={{ color: 'var(--text-secondary)' }}>
+          Complaint not found!
+        </p>    
       </div>
     </div>
   )
 
   return (
-    <div className='min-h-screen bg-gray-50 flex'>
+    <div
+      className='min-h-screen flex'
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >
 
       {/* Sidebar */}
       <AdminSidebar />
@@ -114,8 +125,8 @@ const ComplaintView = () => {
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className='flex items-center gap-2 text-sm text-gray-500 hover:text-green-600 mb-6 transition'
-        >
+          className='flex items-center gap-2 text-sm hover:text-green-600 mb-6 transition'
+          style={{ color: 'var(--text-secondary)' }}   >
           ← Back
         </button>
 
@@ -125,19 +136,27 @@ const ComplaintView = () => {
           <div className='space-y-4'>
 
             {/* Complaint Card */}
-            <div className='bg-white rounded-2xl shadow-sm p-6'>
-
+            <div
+              className='rounded-2xl shadow-sm p-6'
+              style={{ backgroundColor: 'var(--bg-card)' }}
+            >
               {/* Header */}
               <div className='flex items-start gap-3 mb-4'>
                 <div className='w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-2xl'>
                   {getCategoryIcon(complaint.category)}
                 </div>
                 <div className='flex-1'>
-                  <h1 className='text-lg font-bold text-gray-800'>
+                  <h1
+                    className='text-lg font-bold'
+                    style={{ color: 'var(--text-primary)' }}
+                  >
                     {complaint.title}
                   </h1>
                   <div className='flex items-center gap-2 mt-1'>
-                    <span className='text-xs text-gray-400 capitalize'>
+                    <span
+                      className='text-xs capitalize'
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
                       {complaint.category}
                     </span>
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getStatusColor(complaint.status)}`}>
@@ -149,10 +168,16 @@ const ComplaintView = () => {
 
               {/* Description */}
               <div className='mb-4'>
-                <p className='text-xs font-medium text-gray-500 mb-1'>
+                <p
+                  className='text-xs font-medium mb-1'
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   Description
                 </p>
-                <p className='text-sm text-gray-700 leading-relaxed'>
+                <p
+                  className='text-sm leading-relaxed'
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   {complaint.description}
                 </p>
               </div>
@@ -160,12 +185,12 @@ const ComplaintView = () => {
               {/* Location & Date */}
               <div className='grid grid-cols-2 gap-3 mb-4'>
                 <div>
-                  <p className='text-xs font-medium text-gray-500 mb-1'>Location</p>
-                  <p className='text-sm text-gray-700'>📍 {complaint.location}</p>
+                  <p className='text-xs font-medium mb-1' style={{ color: 'var(--text-secondary)' }}>Location</p>
+                  <p className='text-sm' style={{ color: 'var(--text-primary)' }}>📍 {complaint.location}</p>
                 </div>
                 <div>
-                  <p className='text-xs font-medium text-gray-500 mb-1'>Date</p>
-                  <p className='text-sm text-gray-700'>
+                  <p className='text-xs font-medium mb-1' style={{ color: 'var(--text-secondary)' }}>Date</p>
+                  <p className='text-sm' style={{ color: 'var(--text-primary)' }}>
                     🗓️ {new Date(complaint.createdAt).toLocaleDateString()}
                   </p>
                 </div>
@@ -174,14 +199,15 @@ const ComplaintView = () => {
               {/* Images */}
               {complaint.images?.length > 0 && (
                 <div>
-                  <p className='text-xs font-medium text-gray-500 mb-2'>Photos</p>
+                  <p className='text-xs font-medium mb-2' style={{ color: 'var(--text-secondary)' }}>Photos</p>
                   <div className='flex gap-3 flex-wrap'>
                     {complaint.images.map((img, index) => (
                       <img
                         key={index}
                         src={img}
                         alt='complaint'
-                        className='w-24 h-24 object-cover rounded-xl border border-gray-200'
+                        className='w-24 h-24 object-cover rounded-xl border'
+                        style={{ borderColor: 'var(--border-color)' }}
                       />
                     ))}
                   </div>
@@ -191,8 +217,14 @@ const ComplaintView = () => {
             </div>
 
             {/* Villager Info */}
-            <div className='bg-white rounded-2xl shadow-sm p-5'>
-              <p className='text-xs font-medium text-gray-500 mb-3'>
+            <div
+              className='rounded-2xl shadow-sm p-5'
+              style={{ backgroundColor: 'var(--bg-card)' }}
+            >
+              <p
+                className='text-xs font-medium mb-3'
+                style={{ color: 'var(--text-secondary)' }}
+              >
                 Submitted by
               </p>
               <div className='flex items-center gap-3'>
@@ -200,13 +232,22 @@ const ComplaintView = () => {
                   {complaint.villager?.name?.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className='text-sm font-medium text-gray-700'>
+                  <p
+                    className='text-sm font-medium'
+                    style={{ color: 'var(--text-primary)' }}
+                  >
                     {complaint.villager?.name}
                   </p>
-                  <p className='text-xs text-gray-400'>
+                  <p
+                    className='text-xs'
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
                     {complaint.villager?.village} · {complaint.villager?.phone}
                   </p>
-                  <p className='text-xs text-gray-400'>
+                  <p
+                    className='text-xs'
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
                     {complaint.villager?.email}
                   </p>
                 </div>
@@ -219,14 +260,20 @@ const ComplaintView = () => {
           <div className='space-y-4'>
 
             {/* Update Status */}
-            <div className='bg-white rounded-2xl shadow-sm p-6'>
-              <h2 className='text-base font-semibold text-gray-700 mb-4'>
+            <div
+              className='rounded-2xl shadow-sm p-6'
+              style={{ backgroundColor: 'var(--bg-card)' }}
+            >
+              <h2
+                className='text-base font-semibold mb-4'
+                style={{ color: 'var(--text-primary)' }}
+              >
                 Update Complaint
               </h2>
 
               {/* Status Select */}
               <div className='mb-4'>
-                <label className='text-sm text-gray-500 mb-2 block'>
+                <label className='text-sm mb-2 block' style={{ color: 'var(--text-secondary)' }}>
                   Update Status
                 </label>
                 <div className='flex gap-2 flex-wrap'>
@@ -248,7 +295,7 @@ const ComplaintView = () => {
 
               {/* Admin Response */}
               <div className='mb-4'>
-                <label className='text-sm text-gray-500 mb-2 block'>
+                <label className='text-sm mb-2 block' style={{ color: 'var(--text-secondary)' }}>
                   Response to Villager
                 </label>
                 <textarea
@@ -256,7 +303,12 @@ const ComplaintView = () => {
                   onChange={(e) => setAdminResponse(e.target.value)}
                   placeholder='Write your response here...'
                   rows={4}
-                  className='w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 resize-none'
+                  style={{
+                    backgroundColor: 'var(--bg-primary)',
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border-color)'
+                  }}
+                  className='w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 resize-none'
                 />
               </div>
 
@@ -273,8 +325,14 @@ const ComplaintView = () => {
 
             {/* Current Response */}
             {complaint.adminResponse && (
-              <div className='bg-white rounded-2xl shadow-sm p-5'>
-                <p className='text-xs font-medium text-gray-500 mb-2'>
+              <div
+                className='rounded-2xl shadow-sm p-5'
+                style={{ backgroundColor: 'var(--bg-card)' }}
+              >
+                <p
+                  className='text-xs font-medium mb-2'
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   Current Response
                 </p>
                 <div className='bg-green-50 border-l-4 border-green-500 px-4 py-3 rounded-r-xl'>

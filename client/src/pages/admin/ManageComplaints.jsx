@@ -1,5 +1,3 @@
-// src/pages/admin/ManageComplaints.jsx
-
 import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -18,15 +16,13 @@ const ManageComplaints = () => {
 
   const API = import.meta.env.VITE_API_URL
 
-  // ─────────────────────────────────────────
-  // Fetch all complaints
-  // ─────────────────────────────────────────
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
         const { data } = await axios.get(`${API}/api/admin/complaints`, {
           headers: { Authorization: `Bearer ${token}` }
         })
+
         if (data.success) {
           setComplaints(data.data.complaints)
           setFiltered(data.data.complaints)
@@ -37,12 +33,10 @@ const ManageComplaints = () => {
         setLoading(false)
       }
     }
+
     if (token) fetchComplaints()
   }, [token])
 
-  // ─────────────────────────────────────────
-  // Filter complaints
-  // ─────────────────────────────────────────
   useEffect(() => {
     let result = complaints
 
@@ -57,15 +51,17 @@ const ManageComplaints = () => {
     setFiltered(result)
   }, [statusFilter, categoryFilter, complaints])
 
-  // ─────────────────────────────────────────
-  // Delete complaint
-  // ─────────────────────────────────────────
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this complaint?')) return
+
     try {
-      const { data } = await axios.delete(`${API}/api/admin/complaints/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const { data } = await axios.delete(
+        `${API}/api/admin/complaints/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+
       if (data.success) {
         toast.success('Complaint deleted!')
         setComplaints(complaints.filter(c => c._id !== id))
@@ -75,9 +71,6 @@ const ManageComplaints = () => {
     }
   }
 
-  // ─────────────────────────────────────────
-  // Helpers
-  // ─────────────────────────────────────────
   const getStatusColor = (status) => {
     if (status === 'pending') return 'bg-yellow-100 text-yellow-700'
     if (status === 'in-progress') return 'bg-blue-100 text-blue-700'
@@ -92,21 +85,43 @@ const ManageComplaints = () => {
     return '📋'
   }
 
-  return (
-    <div className='min-h-screen bg-gray-50 flex'>
+  // FIXED: Added structural layout with AdminSidebar inside the early loading state return block
+  if (loading) return (
+    <div
+      className='min-h-screen flex'
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >
+      <AdminSidebar />
+      <div className='flex-1 flex items-center justify-center'>
+        <p style={{ color: 'var(--text-secondary)' }}>
+          Loading...
+        </p>
+      </div>
+    </div>
+  )
 
-      {/* Sidebar */}
+  return (
+    <div
+      className='min-h-screen flex'
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >
       <AdminSidebar />
 
-      {/* Main Content */}
       <div className='flex-1 p-6'>
 
         {/* Header */}
         <div className='mb-6'>
-          <h1 className='text-2xl font-bold text-gray-800'>
+          <h1
+            className='text-2xl font-bold'
+            style={{ color: 'var(--text-primary)' }}
+          >
             Manage Complaints
           </h1>
-          <p className='text-gray-500 text-sm mt-1'>
+
+          <p
+            className='text-sm mt-1'
+            style={{ color: 'var(--text-secondary)' }}
+          >
             {filtered.length} complaint{filtered.length !== 1 ? 's' : ''} found
           </p>
         </div>
@@ -114,11 +129,15 @@ const ManageComplaints = () => {
         {/* Filters */}
         <div className='flex gap-3 mb-6 flex-wrap'>
 
-          {/* Status Filter */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className='border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 bg-white'
+            style={{
+              backgroundColor: 'var(--bg-card)',
+              color: 'var(--text-primary)',
+              borderColor: 'var(--border-color)'
+            }}
+            className='border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400'
           >
             <option value='all'>All Status</option>
             <option value='pending'>Pending</option>
@@ -126,11 +145,15 @@ const ManageComplaints = () => {
             <option value='resolved'>Resolved</option>
           </select>
 
-          {/* Category Filter */}
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className='border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 bg-white'
+            style={{
+              backgroundColor: 'var(--bg-card)',
+              color: 'var(--text-primary)',
+              borderColor: 'var(--border-color)'
+            }}
+            className='border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400'
           >
             <option value='all'>All Categories</option>
             <option value='road'>Road</option>
@@ -142,59 +165,91 @@ const ManageComplaints = () => {
 
         </div>
 
-        {/* Complaints List */}
-        {loading ? (
-          <p className='text-gray-400'>Loading...</p>
-        ) : filtered.length === 0 ? (
-          <div className='bg-white rounded-2xl p-12 text-center shadow-sm'>
+        {/* Content */}
+        {filtered.length === 0 ? (
+          <div
+            className='rounded-2xl p-12 text-center shadow-sm'
+            style={{ backgroundColor: 'var(--bg-card)' }}
+          >
             <p className='text-4xl mb-3'>📋</p>
-            <p className='text-gray-400'>No complaints found!</p>
+
+            <p style={{ color: 'var(--text-secondary)' }}>
+              No complaints found!
+            </p>
           </div>
         ) : (
           <div className='space-y-4'>
             {filtered.map((complaint) => (
               <div
                 key={complaint._id}
-                className='bg-white rounded-2xl shadow-sm p-5 border border-gray-100'
+                className='rounded-2xl shadow-sm p-5 border'
+                style={{
+                  backgroundColor: 'var(--bg-card)',
+                  borderColor: 'var(--border-color)'
+                }}
               >
                 <div className='flex items-start gap-4'>
 
-                  {/* Icon */}
                   <div className='w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center text-2xl flex-shrink-0'>
                     {getCategoryIcon(complaint.category)}
                   </div>
 
-                  {/* Info */}
                   <div className='flex-1 min-w-0'>
+
                     <div className='flex items-start justify-between gap-2'>
-                      <h3 className='text-sm font-semibold text-gray-800'>
+                      <h3
+                        className='text-sm font-semibold'
+                        style={{ color: 'var(--text-primary)' }}
+                      >
                         {complaint.title}
                       </h3>
-                      <span className={`text-xs px-3 py-1 rounded-full font-medium flex-shrink-0 ${getStatusColor(complaint.status)}`}>
+
+                      <span
+                        className={`text-xs px-3 py-1 rounded-full font-medium flex-shrink-0 ${getStatusColor(complaint.status)}`}
+                      >
                         {complaint.status}
                       </span>
                     </div>
 
-                    <p className='text-xs text-gray-500 mt-1 line-clamp-2'>
+                    <p
+                      className='text-xs mt-1 line-clamp-2'
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
                       {complaint.description}
                     </p>
 
                     <div className='flex items-center gap-3 mt-2 flex-wrap'>
-                      <span className='text-xs text-gray-400'>
+                      <span
+                        className='text-xs'
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
                         👤 {complaint.villager?.name}
                       </span>
-                      <span className='text-xs text-gray-400'>
-                        🏘️ {complaint.villager?.village}
+
+                      <span
+                        className='text-xs'
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        物件 {complaint.villager?.village}
                       </span>
-                      <span className='text-xs text-gray-400'>
+
+                      <span
+                        className='text-xs'
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
                         📍 {complaint.location}
                       </span>
-                      <span className='text-xs text-gray-400'>
-                        🗓️ {new Date(complaint.createdAt).toLocaleDateString()}
+
+                      <span
+                        className='text-xs'
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        🗓️ {new Date(
+                          complaint.createdAt
+                        ).toLocaleDateString()}
                       </span>
                     </div>
 
-                    {/* Actions */}
                     <div className='flex gap-2 mt-3'>
                       <Link
                         to={`/admin/complaints/${complaint._id}`}
@@ -202,6 +257,7 @@ const ManageComplaints = () => {
                       >
                         Manage
                       </Link>
+
                       <button
                         onClick={() => handleDelete(complaint._id)}
                         className='text-xs bg-red-50 text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-100 transition'
@@ -209,6 +265,7 @@ const ManageComplaints = () => {
                         Delete
                       </button>
                     </div>
+
                   </div>
 
                 </div>

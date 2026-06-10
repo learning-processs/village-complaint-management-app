@@ -1,4 +1,3 @@
-// src/pages/admin/AdminDashboard.jsx
 
 import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
@@ -15,9 +14,6 @@ const AdminDashboard = () => {
 
   const API = import.meta.env.VITE_API_URL
 
-  // ─────────────────────────────────────────
-  // Fetch stats & recent complaints
-  // ─────────────────────────────────────────
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,12 +33,10 @@ const AdminDashboard = () => {
         setLoading(false)
       }
     }
+
     if (token) fetchData()
   }, [token])
 
-  // ─────────────────────────────────────────
-  // Helpers
-  // ─────────────────────────────────────────
   const getStatusColor = (status) => {
     if (status === 'pending') return 'bg-yellow-100 text-yellow-700'
     if (status === 'in-progress') return 'bg-blue-100 text-blue-700'
@@ -58,52 +52,119 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gray-50 flex'>
+    <div
+      className='min-h-screen flex'
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >
 
-      {/* Sidebar */}
       <AdminSidebar />
 
-      {/* Main Content */}
       <div className='flex-1 p-6'>
 
         {/* Header */}
         <div className='mb-6'>
-          <h1 className='text-2xl font-bold text-gray-800'>Dashboard</h1>
-          <p className='text-gray-500 text-sm mt-1'>
+          <h1
+            className='text-2xl font-bold'
+            style={{ color: 'var(--text-primary)' }}
+          >
+            Dashboard
+          </h1>
+
+          <p
+            className='text-sm mt-1'
+            style={{ color: 'var(--text-secondary)' }}
+          >
             Overview of all complaints
           </p>
         </div>
 
         {loading ? (
-          <p className='text-gray-400'>Loading...</p>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            Loading...
+          </p>
         ) : (
           <>
             {/* Stats Cards */}
             <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mb-8'>
-              <div className='bg-white rounded-xl p-4 shadow-sm text-center'>
-                <p className='text-3xl font-bold text-gray-700'>{stats?.total || 0}</p>
-                <p className='text-xs text-gray-500 mt-1'>Total</p>
+
+              <div
+                className='rounded-xl p-4 shadow-sm text-center'
+                style={{ backgroundColor: 'var(--bg-card)' }}
+              >
+                <p
+                  className='text-3xl font-bold'
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  {stats?.total || 0}
+                </p>
+                <p
+                  className='text-xs mt-1'
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Total
+                </p>
               </div>
-              <div className='bg-white rounded-xl p-4 shadow-sm text-center'>
-                <p className='text-3xl font-bold text-yellow-500'>{stats?.pending || 0}</p>
-                <p className='text-xs text-gray-500 mt-1'>Pending</p>
+
+              <div
+                className='rounded-xl p-4 shadow-sm text-center'
+                style={{ backgroundColor: 'var(--bg-card)' }}
+              >
+                <p className='text-3xl font-bold text-yellow-500'>
+                  {stats?.pending || 0}
+                </p>
+                <p
+                  className='text-xs mt-1'
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Pending
+                </p>
               </div>
-              <div className='bg-white rounded-xl p-4 shadow-sm text-center'>
-                <p className='text-3xl font-bold text-blue-500'>{stats?.inProgress || 0}</p>
-                <p className='text-xs text-gray-500 mt-1'>In Progress</p>
+
+              <div
+                className='rounded-xl p-4 shadow-sm text-center'
+                style={{ backgroundColor: 'var(--bg-card)' }}
+              >
+                <p className='text-3xl font-bold text-blue-500'>
+                  {stats?.inProgress || 0}
+                </p>
+                <p
+                  className='text-xs mt-1'
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  In Progress
+                </p>
               </div>
-              <div className='bg-white rounded-xl p-4 shadow-sm text-center'>
-                <p className='text-3xl font-bold text-green-500'>{stats?.resolved || 0}</p>
-                <p className='text-xs text-gray-500 mt-1'>Resolved</p>
+
+              <div
+                className='rounded-xl p-4 shadow-sm text-center'
+                style={{ backgroundColor: 'var(--bg-card)' }}
+              >
+                <p className='text-3xl font-bold text-green-500'>
+                  {stats?.resolved || 0}
+                </p>
+                <p
+                  className='text-xs mt-1'
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Resolved
+                </p>
               </div>
+
             </div>
 
             {/* Recent Complaints */}
-            <div className='bg-white rounded-2xl shadow-sm p-6'>
+            <div
+              className='rounded-2xl shadow-sm p-6'
+              style={{ backgroundColor: 'var(--bg-card)' }}
+            >
               <div className='flex items-center justify-between mb-4'>
-                <h2 className='text-lg font-semibold text-gray-700'>
+                <h2
+                  className='text-lg font-semibold'
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Recent Complaints
                 </h2>
+
                 <Link
                   to='/admin/complaints'
                   className='text-sm text-green-600 hover:underline'
@@ -113,7 +174,10 @@ const AdminDashboard = () => {
               </div>
 
               {complaints.length === 0 ? (
-                <p className='text-center text-gray-400 py-8'>
+                <p
+                  className='text-center py-8'
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   No complaints yet!
                 </p>
               ) : (
@@ -122,27 +186,38 @@ const AdminDashboard = () => {
                     <Link
                       to={`/admin/complaints/${complaint._id}`}
                       key={complaint._id}
-                      className='flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition border border-gray-100'
+                      className='flex items-center gap-4 p-3 rounded-xl border transition'
+                      style={{
+                        borderColor: 'var(--border-color)',
+                      }}
                     >
-                      {/* Icon */}
+
                       <div className='w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-xl flex-shrink-0'>
                         {getCategoryIcon(complaint.category)}
                       </div>
 
-                      {/* Info */}
                       <div className='flex-1 min-w-0'>
-                        <p className='text-sm font-medium text-gray-700 truncate'>
+                        <p
+                          className='text-sm font-medium truncate'
+                          style={{ color: 'var(--text-primary)' }}
+                        >
                           {complaint.title}
                         </p>
-                        <p className='text-xs text-gray-400 mt-0.5'>
+
+                        <p
+                          className='text-xs mt-0.5'
+                          style={{ color: 'var(--text-secondary)' }}
+                        >
                           {complaint.villager?.name} · {complaint.villager?.village}
                         </p>
                       </div>
 
-                      {/* Status */}
-                      <span className={`text-xs px-3 py-1 rounded-full font-medium flex-shrink-0 ${getStatusColor(complaint.status)}`}>
+                      <span
+                        className={`text-xs px-3 py-1 rounded-full font-medium flex-shrink-0 ${getStatusColor(complaint.status)}`}
+                      >
                         {complaint.status}
                       </span>
+
                     </Link>
                   ))}
                 </div>
