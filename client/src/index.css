@@ -4,3 +4,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+  --bg-primary: #e5e7eb;      /* ← darker gray background */
+  --bg-secondary: #f3f4f6;
+  --bg-card: #ffffff;          /* ← white cards */
+  --text-primary: #111827;     /* ← dark text */
+  --text-secondary: #4b5563;   /* ← darker secondary text */
+  --border-color: #d1d5db;
+  --nav-bg: #ffffff;
+}
+
+.dark {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-card: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+  --nav-bg: #1f2937;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: Outfit;
+  transition: background-color 0.3s, color 0.3s;
+}

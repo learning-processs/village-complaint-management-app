@@ -1,5 +1,3 @@
-// src/pages/villager/ComplaintDetail.jsx
-
 import { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -12,24 +10,17 @@ const ComplaintDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { token } = useContext(AutContext)
-
   const [complaint, setComplaint] = useState(null)
   const [loading, setLoading] = useState(true)
-
   const API = import.meta.env.VITE_API_URL
 
-  // ─────────────────────────────────────────
-  // Fetch complaint by id
-  // ─────────────────────────────────────────
   useEffect(() => {
     const fetchComplaint = async () => {
       try {
         const { data } = await axios.get(`${API}/api/complaint/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        if (data.success) {
-          setComplaint(data.data.complaint)
-        }
+        if (data.success) setComplaint(data.data.complaint)
       } catch (error) {
         toast.error('Failed to fetch complaint')
       } finally {
@@ -39,9 +30,6 @@ const ComplaintDetail = () => {
     if (token) fetchComplaint()
   }, [id, token])
 
-  // ─────────────────────────────────────────
-  // Helpers
-  // ─────────────────────────────────────────
   const getStatusColor = (status) => {
     if (status === 'pending') return 'bg-yellow-100 text-yellow-700'
     if (status === 'in-progress') return 'bg-blue-100 text-blue-700'
@@ -64,19 +52,19 @@ const ComplaintDetail = () => {
   }
 
   if (loading) return (
-    <div className='min-h-screen bg-gray-50'>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <Navbar />
       <div className='flex items-center justify-center py-20'>
-        <p className='text-gray-400'>Loading...</p>
+        <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
       </div>
     </div>
   )
 
   if (!complaint) return (
-    <div className='min-h-screen bg-gray-50'>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <Navbar />
       <div className='flex items-center justify-center py-20'>
-        <p className='text-gray-400'>Complaint not found!</p>
+        <p style={{ color: 'var(--text-secondary)' }}>Complaint not found!</p>
       </div>
     </div>
   )
@@ -85,7 +73,7 @@ const ComplaintDetail = () => {
   const currentStep = getStatusStep(complaint.status)
 
   return (
-    <div className='min-h-screen bg-gray-50'>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <Navbar />
 
       <div className='max-w-2xl mx-auto px-4 py-8'>
@@ -93,13 +81,14 @@ const ComplaintDetail = () => {
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className='flex items-center gap-2 text-sm text-gray-500 hover:text-green-600 mb-6 transition'
+          className='flex items-center gap-2 text-sm hover:text-green-600 mb-6 transition'
+          style={{ color: 'var(--text-secondary)' }}
         >
           ← Back
         </button>
 
         {/* Main Card */}
-        <div className='bg-white rounded-2xl shadow-sm p-6 mb-4'>
+        <div style={{ backgroundColor: 'var(--bg-card)' }} className='rounded-2xl shadow-sm p-6 mb-4'>
 
           {/* Header */}
           <div className='flex items-start justify-between mb-4'>
@@ -108,10 +97,10 @@ const ComplaintDetail = () => {
                 {getCategoryIcon(complaint.category)}
               </div>
               <div>
-                <h1 className='text-lg font-bold text-gray-800'>
+                <h1 className='text-lg font-bold' style={{ color: 'var(--text-primary)' }}>
                   {complaint.title}
                 </h1>
-                <p className='text-xs text-gray-400 capitalize'>
+                <p className='text-xs capitalize' style={{ color: 'var(--text-secondary)' }}>
                   {complaint.category}
                 </p>
               </div>
@@ -127,23 +116,16 @@ const ComplaintDetail = () => {
               <div key={step} className='flex items-center flex-1'>
                 <div className='flex flex-col items-center'>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold
-                    ${index + 1 <= currentStep
-                      ? 'bg-green-600 text-white'
-                      : 'bg-gray-100 text-gray-400'
-                    }`}
+                    ${index + 1 <= currentStep ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-400'}`}
                   >
                     {index + 1 <= currentStep ? '✓' : index + 1}
                   </div>
-                  <p className={`text-xs mt-1 whitespace-nowrap
-                    ${index + 1 <= currentStep ? 'text-green-600' : 'text-gray-400'}`}
-                  >
+                  <p className={`text-xs mt-1 whitespace-nowrap ${index + 1 <= currentStep ? 'text-green-600' : 'text-gray-400'}`}>
                     {step}
                   </p>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className={`flex-1 h-0.5 mx-2 mb-4
-                    ${index + 1 < currentStep ? 'bg-green-600' : 'bg-gray-200'}`}
-                  />
+                  <div className={`flex-1 h-0.5 mx-2 mb-4 ${index + 1 < currentStep ? 'bg-green-600' : 'bg-gray-200'}`} />
                 )}
               </div>
             ))}
@@ -151,8 +133,8 @@ const ComplaintDetail = () => {
 
           {/* Description */}
           <div className='mb-4'>
-            <p className='text-xs font-medium text-gray-500 mb-1'>Description</p>
-            <p className='text-sm text-gray-700 leading-relaxed'>
+            <p className='text-xs font-medium mb-1' style={{ color: 'var(--text-secondary)' }}>Description</p>
+            <p className='text-sm leading-relaxed' style={{ color: 'var(--text-primary)' }}>
               {complaint.description}
             </p>
           </div>
@@ -160,12 +142,12 @@ const ComplaintDetail = () => {
           {/* Location & Date */}
           <div className='flex gap-4 mb-4'>
             <div>
-              <p className='text-xs font-medium text-gray-500 mb-1'>Location</p>
-              <p className='text-sm text-gray-700'>📍 {complaint.location}</p>
+              <p className='text-xs font-medium mb-1' style={{ color: 'var(--text-secondary)' }}>Location</p>
+              <p className='text-sm' style={{ color: 'var(--text-primary)' }}>📍 {complaint.location}</p>
             </div>
             <div>
-              <p className='text-xs font-medium text-gray-500 mb-1'>Submitted</p>
-              <p className='text-sm text-gray-700'>
+              <p className='text-xs font-medium mb-1' style={{ color: 'var(--text-secondary)' }}>Submitted</p>
+              <p className='text-sm' style={{ color: 'var(--text-primary)' }}>
                 🗓️ {new Date(complaint.createdAt).toLocaleDateString()}
               </p>
             </div>
@@ -174,15 +156,10 @@ const ComplaintDetail = () => {
           {/* Images */}
           {complaint.images?.length > 0 && (
             <div className='mb-4'>
-              <p className='text-xs font-medium text-gray-500 mb-2'>Photos</p>
+              <p className='text-xs font-medium mb-2' style={{ color: 'var(--text-secondary)' }}>Photos</p>
               <div className='flex gap-3 flex-wrap'>
                 {complaint.images.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt='complaint'
-                    className='w-24 h-24 object-cover rounded-xl border border-gray-200'
-                  />
+                  <img key={index} src={img} alt='complaint' className='w-24 h-24 object-cover rounded-xl border border-gray-200' />
                 ))}
               </div>
             </div>
@@ -191,12 +168,8 @@ const ComplaintDetail = () => {
           {/* Admin Response */}
           {complaint.adminResponse && (
             <div className='bg-green-50 border-l-4 border-green-500 px-4 py-3 rounded-r-xl'>
-              <p className='text-xs font-semibold text-green-700 mb-1'>
-                Admin Response
-              </p>
-              <p className='text-sm text-green-700'>
-                {complaint.adminResponse}
-              </p>
+              <p className='text-xs font-semibold text-green-700 mb-1'>Admin Response</p>
+              <p className='text-sm text-green-700'>{complaint.adminResponse}</p>
             </div>
           )}
 
@@ -204,8 +177,8 @@ const ComplaintDetail = () => {
 
         {/* Villager Info */}
         {complaint.villager && (
-          <div className='bg-white rounded-2xl shadow-sm p-4'>
-            <p className='text-xs font-medium text-gray-500 mb-3'>
+          <div style={{ backgroundColor: 'var(--bg-card)' }} className='rounded-2xl shadow-sm p-4'>
+            <p className='text-xs font-medium mb-3' style={{ color: 'var(--text-secondary)' }}>
               Submitted by
             </p>
             <div className='flex items-center gap-3'>
@@ -213,10 +186,10 @@ const ComplaintDetail = () => {
                 {complaint.villager.name?.charAt(0).toUpperCase()}
               </div>
               <div>
-                <p className='text-sm font-medium text-gray-700'>
+                <p className='text-sm font-medium' style={{ color: 'var(--text-primary)' }}>
                   {complaint.villager.name}
                 </p>
-                <p className='text-xs text-gray-400'>
+                <p className='text-xs' style={{ color: 'var(--text-secondary)' }}>
                   {complaint.villager.village} · {complaint.villager.phone}
                 </p>
               </div>
