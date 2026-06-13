@@ -80,21 +80,25 @@ const AdminSidebar = () => {
       </nav>
 
       {/* Theme Toggle */}
-      <div className='px-4 pb-2'>
-        <button
-          onClick={toggleTheme}
-          onMouseEnter={() => setIsThemeHovered(true)}
-          onMouseLeave={() => setIsThemeHovered(false)}
-          className='w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition'
-          style={{ 
-            color: 'var(--text-primary)',
-            backgroundColor: isThemeHovered ? 'var(--bg-primary)' : 'transparent'
-          }}
-        >
-          <span>{darkMode ? '☀️' : '🌙'}</span>
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
-        </button>
-      </div>
+      {/* Theme Toggle */}
+<div className='px-4 pb-2'>
+  <div className='flex items-center gap-3 px-3 py-2.5'>
+    <span className='text-sm' style={{ color: 'var(--text-primary)' }}>
+      {darkMode ? 'Dark Mode' : 'Light Mode'}
+    </span>
+    <button
+      onClick={toggleTheme}
+      className={`relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none ml-auto
+        ${darkMode ? 'bg-gray-600' : 'bg-gray-200'}`}
+    >
+      <span className={`absolute top-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs shadow-md transition-transform duration-300
+        ${darkMode ? 'translate-x-6 bg-orange-400' : 'translate-x-0.5 bg-white'}`}
+      >
+        {darkMode ? '🌙' : '☀️'}
+      </span>
+    </button>
+  </div>
+</div>
 
       {/* User Info + Logout */}
       <div
