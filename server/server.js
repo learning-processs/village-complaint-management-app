@@ -31,7 +31,7 @@ app.use('/api/admin',adminRoute);
 
 
 app.get('/',(req, resp)=>{
-    resp.send("API WORKING...")
+    resp.send("API WORKING...");
 })
 
 app.use(errorHandler);
